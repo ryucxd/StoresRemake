@@ -85,7 +85,7 @@ namespace StoresRemake
                 using (SqlConnection conn = new SqlConnection(CONNECT.ConnectionString))
                 {
                     conn.Open();
-                    using (SqlCommand cmd = new SqlCommand(sql, conn))
+                    using (SqlCommand cmd = new SqlCommand(sql, conn)) //
                     {
                         var getDescription = cmd.ExecuteScalar();
                         if (getDescription == null)
@@ -107,8 +107,9 @@ namespace StoresRemake
                 if (description != "No Description.") //if theres no description then there is prob no stock code for this
                 {
                     addDeduction(description, quantity);
-                    formatting();
+                    formatting();//
                 }
+                dataGridView1.FirstDisplayedScrollingRowIndex = dataGridView1.Rows.Count - 1;
                 txtStockCode.Text = "";
                 txtStockCode.Focus();
             }
@@ -150,6 +151,8 @@ namespace StoresRemake
 
         private void dataGridView1_CellContentClick(object sender, DataGridViewCellEventArgs e)
         {
+            //before removing the cell get the index 
+            int indexScroll = e.RowIndex;
             int index = dataGridView1.Columns["Remove"].Index;
             if (e.ColumnIndex == index)
             {
@@ -184,6 +187,11 @@ namespace StoresRemake
                 dataGridView1.DataSource = null;
                 dataGridView1.DataSource = dt;
                 formatting();
+                if (indexScroll > dataGridView1.Rows.Count -1)
+                {
+                    indexScroll = indexScroll - 1;
+                }
+                dataGridView1.FirstDisplayedScrollingRowIndex = indexScroll;
             }
         }
 
