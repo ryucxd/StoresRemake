@@ -44,25 +44,25 @@ namespace StoresRemake
                         //try catch this for wrong entries
                         try
                         {
-                             sql = "select [description] from dbo.stock where stock_code = " + _stockCode;
+                            sql = "select [description] from dbo.stock where stock_code = " + _stockCode;
                             string description = "";
                             double quantity = 0;
-                                using (SqlCommand cmd = new SqlCommand(sql, conn)) //
-                                {
-                                    var getDescription = cmd.ExecuteScalar();
-                                    if (getDescription == null)
-                                        description = "No Description.";
-                                    else
-                                        description = getDescription.ToString();
-                                }
-                                sql = "select amount_in_stock FROM dbo.stock where stock_code = '" + _stockCode + "'";
-                                using (SqlCommand cmd = new SqlCommand(sql, conn))
-                                {
-                                    var getQty = cmd.ExecuteScalar();
-                                    if (getQty != null)
-                                        quantity = Convert.ToDouble(getQty);
-                                }
-                       
+                            using (SqlCommand cmd = new SqlCommand(sql, conn)) //
+                            {
+                                var getDescription = cmd.ExecuteScalar();
+                                if (getDescription == null)
+                                    description = "No Description.";
+                                else
+                                    description = getDescription.ToString();
+                            }
+                            sql = "select amount_in_stock FROM dbo.stock where stock_code = '" + _stockCode + "'";
+                            using (SqlCommand cmd = new SqlCommand(sql, conn))
+                            {
+                                var getQty = cmd.ExecuteScalar();
+                                if (getQty != null)
+                                    quantity = Convert.ToDouble(getQty);
+                            }
+
 
                             //load data into the dgv
                             if (description != "No Description.") //if theres no description then there is prob no stock code for this
@@ -84,13 +84,13 @@ namespace StoresRemake
                         }
                         catch
                         {
-                            
+
                         }
 
                     }
                     formatting();
                     conn.Close();
-                    
+
                 }
             }
             _skip = 0;
@@ -115,14 +115,12 @@ namespace StoresRemake
                     cmd.ExecuteNonQuery();
                 if (dataGridView1.Rows.Count > 0)
                 {
-
                     for (int i = 0; i < dataGridView1.Rows.Count; i++)
                     {
                         sql = "insert into dbo.stores_remake_list (stock_code,deduct_qty) VALUES ('" + dataGridView1.Rows[i].Cells[stock_code_index].Value.ToString() + "'," + dataGridView1.Rows[i].Cells[qtd_index].Value.ToString() + ")";
                         using (SqlCommand cmd = new SqlCommand(sql, conn))
                             cmd.ExecuteNonQuery();
                     }
-
                 }
                 conn.Close();
             }
@@ -164,8 +162,8 @@ namespace StoresRemake
                 {
                     DataRow dataRow = dt.NewRow();
                     dataRow["Stock Code"] = row.Cells[0].Value.ToString();
-                    dataRow["Description"] = row.Cells[1].Value.ToString(); ;
-                    dataRow["Quantity in Stock"] = row.Cells[2].Value.ToString(); ;
+                    dataRow["Description"] = row.Cells[1].Value.ToString();
+                    dataRow["Quantity in Stock"] = row.Cells[2].Value.ToString();
                     dataRow["Quantity to Deduct"] = row.Cells[3].Value.ToString();
                     dt.Rows.Add(dataRow);
                 }
@@ -175,7 +173,7 @@ namespace StoresRemake
                 newRow["Description"] = description;
                 newRow["Quantity in Stock"] = quantity_in_stock;
                 newRow["Quantity to Deduct"] = "1";
-                dt.Rows.Add(newRow);
+                dt.Rows.Add(newRow); 
 
                 dataGridView1.DataSource = null;
                 dataGridView1.DataSource = dt;
@@ -227,8 +225,8 @@ namespace StoresRemake
                 {
                     DataRow dataRow = dt.NewRow();
                     dataRow["Stock Code"] = row.Cells[stock_code_index].Value.ToString();
-                    dataRow["Description"] = row.Cells[description_index].Value.ToString(); ;
-                    dataRow["Quantity in Stock"] = row.Cells[qis_index].Value.ToString(); ;
+                    dataRow["Description"] = row.Cells[description_index].Value.ToString();
+                    dataRow["Quantity in Stock"] = row.Cells[qis_index].Value.ToString();
                     dataRow["Quantity to Deduct"] = row.Cells[qtd_index].Value.ToString();
                     dt.Rows.Add(dataRow);
                 }
@@ -265,7 +263,7 @@ namespace StoresRemake
                         {
                             var getDescription = cmd.ExecuteScalar();
                             if (getDescription == null)
-                                description = "No Description.";
+                                description = "No Description."; 
                             else
                                 description = getDescription.ToString();
                         }
@@ -282,9 +280,9 @@ namespace StoresRemake
                     //load data into the dgv
                     if (description != "No Description.") //if theres no description then there is prob no stock code for this
                     {
-                            addDeduction(description, quantity);
-                            formatting();//
-                            uploadList();
+                        addDeduction(description, quantity);
+                        formatting();//
+                        uploadList();
                     }
                     dataGridView1.FirstDisplayedScrollingRowIndex = dataGridView1.Rows.Count - 1;
                     txtStockCode.Text = "";
@@ -376,7 +374,7 @@ namespace StoresRemake
                     DataRow dataRow = dt.NewRow();
                     dataRow["Stock Code"] = row.Cells[0].Value.ToString();
                     dataRow["Description"] = row.Cells[1].Value.ToString(); ;
-                    dataRow["Quantity in Stock"] = row.Cells[2].Value.ToString(); ;
+                    dataRow["Quantity in Stock"] = row.Cells[2].Value.ToString();
                     dataRow["Quantity to Deduct"] = row.Cells[3].Value.ToString();
                     dt.Rows.Add(dataRow);
                 }
@@ -452,8 +450,8 @@ namespace StoresRemake
 
                     DataRow dataRow = dt.NewRow();
                     dataRow["Stock Code"] = row.Cells[0].Value.ToString();
-                    dataRow["Description"] = row.Cells[1].Value.ToString(); ;
-                    dataRow["Quantity in Stock"] = row.Cells[2].Value.ToString(); ;
+                    dataRow["Description"] = row.Cells[1].Value.ToString();
+                    dataRow["Quantity in Stock"] = row.Cells[2].Value.ToString();
                     dataRow["Quantity to Deduct"] = row.Cells[3].Value.ToString();
                     dt.Rows.Add(dataRow);
                 }
@@ -517,7 +515,7 @@ namespace StoresRemake
             string sql = "delete FROM dbo.stores_remake_list ";
             using (SqlConnection conn = new SqlConnection(CONNECT.ConnectionString))
             {
-                using (SqlCommand cmd  = new SqlCommand(sql,conn))
+                using (SqlCommand cmd = new SqlCommand(sql, conn))
                 {
                     conn.Open();
                     cmd.ExecuteNonQuery();
